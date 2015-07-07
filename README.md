@@ -8,6 +8,9 @@ A Lightweight API Server (a base from which very simple, lightweight and reusabl
   * Gives objects a unique id
   * Can return failed responses from the server in a promisy fashion ({res:[], err:{code: 404, msg: "error does not exist"})
   * Easily hooked into (this way LapisJS can easily sit on top and also, modules)
+  * Can easily push up new data in a similar way to pulling it down
+  * One php script for bidirectional uploads and requests
+
 
 ## Spec (LapisJS)
   * Can be called using async promises
