@@ -23,7 +23,7 @@ class Database {
         return $database_connection;
     }
 
-    public function databaseQuery($database_connection, $sql_query) {
+    public function database_query($database_connection, $sql_query) {
         $query_result=mysqli_query($database_connection, $sql_query);
         return $query_result;
     }
