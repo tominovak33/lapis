@@ -30,12 +30,9 @@ class Content {
             db_escape_string($this->get_parameter($parameter_name))
         );
 
-        //var_dump($sql);
         $result = database_query($sql);
 
-        $row = db_fetch_assoc($result);
-
-        return $row;
+        return db_fetch_assoc($result);
     }
 
 }
