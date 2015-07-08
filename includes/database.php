@@ -81,9 +81,20 @@ function query_row_by_name($query_result, $column) {
     }
 }
 
+function db_fetch_array($query_result) {
+    return mysqli_fetch_array($query_result);
+}
+
+function db_fetch_assoc($query_result) {
+    return mysqli_fetch_assoc($query_result);
+}
+
+function db_fetch_row($query_result) {
+    return mysqli_fetch_row($query_result);
+}
+
 function db_number_of_rows($query_result) {
-    $rows=mysqli_num_rows($query_result);
-    return $rows;
+    return mysqli_num_rows($query_result);
 }
 
 function db_escape_string($string) {
