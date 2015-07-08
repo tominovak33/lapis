@@ -6,5 +6,18 @@
  * Time: 20:10
  */
 
+header("Content-Type: application/json");
+
 require 'includes/config.php';
 require 'includes/database.php';
+require 'includes/content/content.php';
+
+$content = new Content();
+
+foreach ($_GET as $key => $value) {
+    $content->set_parameter($key, $value);
+}
+
+$search = $content->search_by('technology');
+
+echo json_encode($search); //Add JSON_PRETTY_PRINT as second param if needed
