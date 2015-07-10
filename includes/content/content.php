@@ -22,6 +22,8 @@ class Content {
     }
 
     function search_by($parameter_name) {
+        $returned_items = [];
+
         $sql = sprintf("SELECT * FROM
             patterns WHERE
             %s = '%s'
@@ -32,7 +34,11 @@ class Content {
 
         $result = database_query($sql);
 
-        return db_fetch_assoc($result);
+        while ($row = db_fetch_assoc($result)) {
+            $returned_items[] = $row;
+        }
+
+        return $returned_items;
     }
 
 }
