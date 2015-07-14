@@ -14,6 +14,7 @@ require 'includes/functions.php';
 require 'includes/content/content.php';
 
 $request_type = get_request_type();
+$response = response_setup();
 
 $content = new Content();
 $keys = [];
@@ -24,7 +25,7 @@ foreach ($_GET as $key => $value) {
 }
 
 if ($request_type == 'GET') {
-    $response = $content->search_by($keys);
+    $response['data'] = $content->search_by($keys);
 }
 elseif ($request_type == 'POST') {
     $response = array();
@@ -36,5 +37,9 @@ else {
     $response['error'] = "Unknown method";
     $response['error_message'] = "Please use a valid API method";
 }
+
+sleep(5);
+
+$response = response_time($response);
 
 echo json_encode($response, JSON_PRETTY_PRINT); //Add JSON_PRETTY_PRINT as second param if needed

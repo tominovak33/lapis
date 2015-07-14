@@ -21,3 +21,30 @@ function get_request_type() {
     $request_type = $exploded_url[0];
     return strtoupper($request_type);
 }
+
+/*
+ * Sets up the response array with standard things such as the timestamp, url etc
+ */
+function response_setup() {
+    $response = array();
+
+    $response['request_time'] = $_SERVER['REQUEST_TIME'];
+    $response['address'] = $_SERVER['SERVER_ADDR'];
+    $response['finish_time'] = $_SERVER['REQUEST_METHOD'];
+    $response['process_time'] = $_SERVER['REQUEST_METHOD'];
+
+    $response['software'] = $_SERVER['SERVER_SOFTWARE'];
+    $response['request_method'] = $_SERVER['REQUEST_METHOD'];
+
+    return $response;
+}
+
+/*
+ * Adds the time when server was finished processing the request and the time taken to deal with the response
+ */
+function response_time($response) {
+    $response['finish_time'] = time();
+    $response['process_time'] = $response['finish_time'] - $response['request_time'];
+
+    return $response;
+}
