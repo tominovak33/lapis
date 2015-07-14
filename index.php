@@ -38,8 +38,6 @@ else {
     $response['error_message'] = "Please use a valid API method";
 }
 
-sleep(5);
-
 $response = response_time($response);
 
 echo json_encode($response, JSON_PRETTY_PRINT); //Add JSON_PRETTY_PRINT as second param if needed
