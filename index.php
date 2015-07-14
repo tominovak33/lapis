@@ -28,12 +28,10 @@ if ($request_type == 'GET') {
     $response['data'] = $content->search_by($keys);
 }
 elseif ($request_type == 'POST') {
-    $response = array();
     $response['error'] = "Unknown method";
     $response['error_message'] = "POST methods will be available soon";
 }
 else {
-    $response = array();
     $response['error'] = "Unknown method";
     $response['error_message'] = "Please use a valid API method";
 }
