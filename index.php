@@ -22,4 +22,4 @@ foreach ($_GET as $key => $value) {
 
 $search = $content->search_by($keys);
 
-echo json_encode($search); //Add JSON_PRETTY_PRINT as second param if needed
+echo json_encode($search, JSON_PRETTY_PRINT); //Add JSON_PRETTY_PRINT as second param if needed
