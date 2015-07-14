@@ -21,16 +21,29 @@ class Content {
         return $this->parameters[$name];
     }
 
-    function search_by($parameter_name) {
+    function search_by($parameters) {
         $returned_items = [];
 
         $sql = sprintf("SELECT * FROM
             patterns WHERE
             %s = '%s'
-            ;",
-            $parameter_name,
-            db_escape_string($this->get_parameter($parameter_name))
+            ",
+            $parameters[0],
+            db_escape_string($this->get_parameter($parameters[0]))
         );
+
+        array_shift($parameters); //so the first item doesn't get added again
+
+        if (count($parameters) > 0) {
+            foreach($parameters as $parameter) {
+                $sql .= sprintf(" AND
+                    %s = '%s'
+                    ",
+                    $parameter,
+                    db_escape_string($this->get_parameter($parameter))
+                );
+            }
+        }
 
         $result = database_query($sql);
 
