@@ -50,3 +50,5 @@ A Lightweight API Server (a base from which very simple, lightweight and reusabl
   * Do we build this purely for JS?
   * Do we have a PHP middle man? (JS - PHP - SERVER || JS - SERVER)
 
+## Deployment
+  * Deployment script is located in /development and should be run from the same directory as the www folder is placed in
