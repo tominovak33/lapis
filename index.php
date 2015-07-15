@@ -20,6 +20,6 @@ foreach ($_GET as $key => $value) {
     $content->set_parameter($key, $value);
 }
 
-$search = $content->search_by($keys[0]);
+$search = $content->search_by($keys);
 
 echo json_encode($search); //Add JSON_PRETTY_PRINT as second param if needed
