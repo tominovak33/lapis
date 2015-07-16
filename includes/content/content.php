@@ -69,9 +69,7 @@ class Content {
 
     function add_options_to_query($query) {
         if ($this->get_query_options('ORDER')) {
-            $query .= sprintf("ORDER BY
-            '%s' %s
-            ",
+            $query .= sprintf("ORDER BY patterns.%s %s ",
                 db_escape_string($this->get_query_options('ORDER_BY')),
                 db_escape_string($this->get_query_options('ORDER'))
             );
