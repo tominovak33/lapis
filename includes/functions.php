@@ -6,6 +6,17 @@
  * Time: 22:07
  */
 
+
+/*-------------------------------------------------------------
+/ Development functions - Put useful development functions here
+/-------------------------------------------------------------*/
+
+function die_dump($data) {
+    echo '<pre>';
+    var_dump($data);
+    die;
+}
+
 /*-------------------------------------------------------------
 / Shared functions - Put non specific utility functions here
 /-------------------------------------------------------------*/
@@ -60,4 +71,22 @@ function query_log($query) {
     $query_log_file = fopen("../query_log.txt", "a");
     fwrite($query_log_file, $query . "\n");
     fclose($query_log_file);
+}
+
+function get_query_options() {
+    $available_options = array('ORDER', 'LIMIT');
+    $options = [];
+
+    foreach ($available_options as $option_name) {
+        if (isset($_GET[$option_name])) {
+            $option['name'] = $option_name;
+            $option['value'] = $_GET[$option_name];
+
+            unset($_GET[$option_name]); //Get rid of the option so it doesn't interfere later
+
+            $options[] = $option;
+        }
+    }
+
+    return $options;
 }
