@@ -74,7 +74,7 @@ function query_log($query) {
 }
 
 function get_query_options() {
-    $available_options = array('ORDER', 'LIMIT');
+    $available_options = array('ORDER_BY', 'ORDER', 'LIMIT');
     $options = [];
 
     foreach ($available_options as $option_name) {
