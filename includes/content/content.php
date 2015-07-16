@@ -9,6 +9,7 @@
 class Content {
 
     var $parameters = [];
+    var $query_options = [];
 
     function __construct() {
     }
@@ -17,8 +18,16 @@ class Content {
         $this->parameters[$name] = $value;
     }
 
+    function set_query_options($option_name, $option_value) {
+        $this->query_options[$option_name] = $option_value;
+    }
+
     function get_parameter($name) {
         return $this->parameters[$name];
+    }
+
+    function get_query_options($option_name) {
+        return $this->query_options[$option_name];
     }
 
     function search_by($parameters) {
@@ -53,5 +62,6 @@ class Content {
 
         return $returned_items;
     }
+
 
 }

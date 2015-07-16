@@ -19,11 +19,16 @@ $response = response_setup();
 $content = new Content();
 $keys = [];
 
+$options = get_query_options();
+
+foreach ($options as $option) {
+    $content->set_query_options($option['name'], $option['value']);
+}
+
 foreach ($_GET as $key => $value) {
     $keys [] = $key;
     $content->set_parameter($key, $value);
 }
-
 
 switch ($request_type) {
     case 'GET' :
