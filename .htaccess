@@ -13,3 +13,9 @@ RedirectMatch 404 /\development
   Order Allow,Deny
   Deny from all
 </FilesMatch>
+
+# Protect sql query logs
+<Files query_logs.txt>
+  Order Allow,Deny
+  Deny from all
+</Files>

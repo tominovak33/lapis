@@ -63,14 +63,20 @@ function response_time($response) {
 }
 
 function query_log($query) {
-    if (!file_exists('../query_log.txt')) {
-        $tmp = fopen("../query_log.txt", "w");
-        chmod('../commands/command.sh', 0755);
-        fclose($tmp);
+    if (LOG_DB_QUERIES == true) {
+        $query = str_replace("\n", ' ' , $query);
+        $query = str_replace("             ", ' ' , $query); //Replace the massive spaces that my sprintf functions insert
+
+        if (!file_exists('logs/query_log.txt')) {
+            $tmp = fopen("logs/query_log.txt", "w");
+            chmod('logs/query_log.txt', 0755);
+            fclose($tmp);
+        }
+        $query_log_file = fopen("logs/query_log.txt", "a");
+        fwrite($query_log_file,date("Y-m-d H:i:s") . ' - ');
+        fwrite($query_log_file, $query . "\n");
+        fclose($query_log_file);
     }
-    $query_log_file = fopen("../query_log.txt", "a");
-    fwrite($query_log_file, $query . "\n");
-    fclose($query_log_file);
 }
 
 function get_query_options() {

@@ -57,7 +57,7 @@ class Content {
         }
 
         $sql = $this->add_options_to_query($sql);
-        
+
         $result = database_query($sql);
 
         while ($row = db_fetch_assoc($result)) {
