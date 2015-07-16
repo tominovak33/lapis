@@ -24,16 +24,20 @@ foreach ($_GET as $key => $value) {
     $content->set_parameter($key, $value);
 }
 
-if ($request_type == 'GET') {
-    $response['data'] = $content->search_by($keys);
-}
-elseif ($request_type == 'POST') {
-    $response['error'] = "Unknown method";
-    $response['error_message'] = "POST methods will be available soon";
-}
-else {
-    $response['error'] = "Unknown method";
-    $response['error_message'] = "Please use a valid API method";
+
+switch ($request_type) {
+    case 'GET' :
+        $response['data'] = $content->search_by($keys);
+        break;
+
+    case 'POST':
+        $response['error'] = "Unknown method";
+        $response['error_message'] = "POST methods will be available soon";
+        break;
+
+    default:
+        $response['error'] = "Unknown method";
+        $response['error_message'] = "Please use a valid API method";
 }
 
 $response = response_time($response);
