@@ -32,6 +32,7 @@ function response_setup() {
     $response['address'] = $_SERVER['SERVER_ADDR'];
     $response['finish_time'] = $_SERVER['REQUEST_METHOD'];
     $response['process_time'] = $_SERVER['REQUEST_METHOD'];
+    $response['database_queries'] = 0;
 
     $response['software'] = $_SERVER['SERVER_SOFTWARE'];
     $response['request_method'] = $_SERVER['REQUEST_METHOD'];
@@ -45,6 +46,18 @@ function response_setup() {
 function response_time($response) {
     $response['finish_time'] = time();
     $response['process_time'] = $response['finish_time'] - $response['request_time'];
+    $response['database_queries'] = $GLOBALS['db_query_count'];
 
     return $response;
+}
+
+function query_log($query) {
+    if (!file_exists('../query_log.txt')) {
+        $tmp = fopen("../query_log.txt", "w");
+        chmod('../commands/command.sh', 0755);
+        fclose($tmp);
+    }
+    $query_log_file = fopen("../query_log.txt", "a");
+    fwrite($query_log_file, $query . "\n");
+    fclose($query_log_file);
 }
