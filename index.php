@@ -10,16 +10,41 @@ header("Content-Type: application/json");
 
 require 'includes/config.php';
 require 'includes/database.php';
+require 'includes/functions.php';
 require 'includes/content/content.php';
+
+$request_type = get_request_type();
+$response = response_setup();
 
 $content = new Content();
 $keys = [];
+
+$options = get_query_options();
+
+foreach ($options as $option) {
+    $content->set_query_options($option['name'], $option['value']);
+}
 
 foreach ($_GET as $key => $value) {
     $keys [] = $key;
     $content->set_parameter($key, $value);
 }
 
-$search = $content->search_by($keys);
+switch ($request_type) {
+    case 'GET' :
+        $response['data'] = $content->search_by($keys);
+        break;
 
-echo json_encode($search); //Add JSON_PRETTY_PRINT as second param if needed
+    case 'POST':
+        $response['error'] = "Unknown method";
+        $response['error_message'] = "POST methods will be available soon";
+        break;
+
+    default:
+        $response['error'] = "Unknown method";
+        $response['error_message'] = "Please use a valid API method";
+}
+
+$response = response_time($response);
+
+echo json_encode($response, JSON_PRETTY_PRINT); //Add JSON_PRETTY_PRINT as second param if needed

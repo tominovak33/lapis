@@ -9,16 +9,27 @@
 class Content {
 
     var $parameters = [];
+    var $query_options = [];
 
     function __construct() {
+        $this->query_options['ORDER'] = 'ASC';
+        $this->query_options['LIMIT'] =  50;
     }
 
     function set_parameter($name, $value) {
         $this->parameters[$name] = $value;
     }
 
+    function set_query_options($option_name, $option_value) {
+        $this->query_options[$option_name] = $option_value;
+    }
+
     function get_parameter($name) {
         return $this->parameters[$name];
+    }
+
+    function get_query_options($option_name) {
+        return $this->query_options[$option_name];
     }
 
     function search_by($parameters) {
@@ -45,6 +56,8 @@ class Content {
             }
         }
 
+        $sql = $this->add_options_to_query($sql);
+
         $result = database_query($sql);
 
         while ($row = db_fetch_assoc($result)) {
@@ -52,6 +65,23 @@ class Content {
         }
 
         return $returned_items;
+    }
+
+    function add_options_to_query($query) {
+        if ($this->get_query_options('ORDER_BY')) {
+            $query .= sprintf("ORDER BY patterns.%s %s ",
+                db_escape_string($this->get_query_options('ORDER_BY')),
+                db_escape_string($this->get_query_options('ORDER'))
+            );
+        }
+
+        $query .= sprintf("LIMIT
+            0, %s
+            ",
+            db_escape_string($this->get_query_options('LIMIT'))
+        );
+
+        return $query;
     }
 
 }

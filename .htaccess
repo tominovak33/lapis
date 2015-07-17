@@ -1,0 +1,21 @@
+RewriteEngine on
+RewriteBase /
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ /?request=$1 [NC,L,QSA] # Redirect every request to index.php
+
+# Prevent access to git and development folder
+RedirectMatch 404 /\.git
+RedirectMatch 404 /\development
+
+# Prevent users from seeing scripts and readme files etc
+<FilesMatch "\.(sh|md)$">
+  Order Allow,Deny
+  Deny from all
+</FilesMatch>
+
+# Protect sql query logs
+<Files query_logs.txt>
+  Order Allow,Deny
+  Deny from all
+</Files>
