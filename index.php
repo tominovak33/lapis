@@ -45,6 +45,8 @@ switch ($request_type) {
         break;
 
     default:
+        http_response_code(405);
+        header("Access-Control-Allow-Methods: GET, POST");
         $response['error'] = "Unknown method";
         $response['error_message'] = "Please use a valid API method";
 }
