@@ -103,8 +103,8 @@ class Content {
             db_escape_string($this->get_parameter($parameters[3]))
         );
 
-        $result['affected_rows'] = database_query($sql);
-        $result['insert_id'] = db_last_ai_id();;
+        $result['successful'] = database_query($sql);
+        $result['insert_id'] = db_last_ai_id();
 
         return $result;
     }
