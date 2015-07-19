@@ -12,8 +12,6 @@ class Content {
     var $query_options = [];
 
     function __construct() {
-        $this->query_options['ORDER'] = 'ASC';
-        $this->query_options['LIMIT'] =  50;
     }
 
     function set_parameter($name, $value) {
@@ -82,6 +80,33 @@ class Content {
         );
 
         return $query;
+    }
+
+    function insert($parameters) {
+        if (count($parameters) < 4) {
+            return false;
+            //add to error feedback
+        }
+        $sql = sprintf("INSERT INTO
+        patterns (
+          %s, %s, %s, %s
+        ) VALUES (
+          '%s', '%s', '%s', '%s'
+        )",
+            db_escape_string($parameters[0]),
+            db_escape_string($parameters[1]),
+            db_escape_string($parameters[2]),
+            db_escape_string($parameters[3]),
+            db_escape_string($this->get_parameter($parameters[0])),
+            db_escape_string($this->get_parameter($parameters[1])),
+            db_escape_string($this->get_parameter($parameters[2])),
+            db_escape_string($this->get_parameter($parameters[3]))
+        );
+
+        $result['affected_rows'] = database_query($sql);
+        $result['insert_id'] = db_last_ai_id();;
+
+        return $result;
     }
 
 }
