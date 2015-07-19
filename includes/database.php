@@ -113,3 +113,10 @@ function db_affected_rows() {
 function db_returned_rows($query_result){
     return mysqli_num_rows($query_result);
 }
+
+/*
+ * Returns the auto incremented ID of the last insert or update query
+ */
+function db_last_ai_id() {
+    return mysqli_insert_id(Database::connect());
+}
