@@ -33,25 +33,31 @@ class Content {
     function search_by($parameters) {
         $returned_items = [];
 
-        $sql = sprintf("SELECT * FROM
-            patterns WHERE
-            %s = '%s'
-            ",
-            $parameters[0],
-            db_escape_string($this->get_parameter($parameters[0]))
-        );
+        // Are there any parametes - if yes, add them. If not select everything
+        if (count($parameters > 0)) {
+          $sql = sprintf("SELECT * FROM
+              patterns WHERE
+              %s = '%s'
+              ",
+              $parameters[0],
+              db_escape_string($this->get_parameter($parameters[0]))
+          );
 
-        array_shift($parameters); //so the first item doesn't get added again
+          array_shift($parameters); //so the first item doesn't get added again
 
-        if (count($parameters) > 0) {
-            foreach($parameters as $parameter) {
-                $sql .= sprintf(" AND
-                    %s = '%s'
-                    ",
-                    $parameter,
-                    db_escape_string($this->get_parameter($parameter))
-                );
-            }
+          if (count($parameters) > 0) {
+              foreach($parameters as $parameter) {
+                  $sql .= sprintf(" AND
+                      %s = '%s'
+                      ",
+                      $parameter,
+                      db_escape_string($this->get_parameter($parameter))
+                  );
+              }
+          }
+        }
+        else {
+          $sql = "SELECT * FROM patterns WHERE 1";
         }
 
         $sql = $this->add_options_to_query($sql);
