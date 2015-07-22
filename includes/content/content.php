@@ -111,10 +111,19 @@ class Content {
     }
 
     function insert($parameters) {
-        if ($this->item_exists() != false ) {
-          $result = $this->update(); //coming soon
-          return result;
+        // If the ID was set, see if an item with that ID exists or not
+        if (isset($parameters['id'])) {
+            // If it does then update that item rather than inserting a new one
+            if ($this->item_exists() != false ) {
+                $result = $this->update(); //coming soon
+                return $result;
+            }
+            // If it doesn't then remove the ID from the list of parameters so it doesn't interfere (this situation should not really happen) and insert it with an AI id
+            else {
+                unset($parameters['id']); //Get rid of the option so it doesn't interfere later
+            }
         }
+
 
         if (count($parameters) < 4) {
             return false;
