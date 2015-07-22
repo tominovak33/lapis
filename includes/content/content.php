@@ -34,7 +34,7 @@ class Content {
         $returned_items = [];
 
         // Are there any parametes - if yes, add them. If not select everything
-        if (count($parameters > 0)) {
+        if (count($parameters) > 0) {
           $sql = sprintf("SELECT * FROM
               patterns WHERE
               %s = '%s'
@@ -57,7 +57,7 @@ class Content {
           }
         }
         else {
-          $sql = "SELECT * FROM patterns WHERE 1";
+          $sql = "SELECT * FROM patterns WHERE 1 ";
         }
 
         $sql = $this->add_options_to_query($sql);
