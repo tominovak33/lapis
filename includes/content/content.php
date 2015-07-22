@@ -106,24 +106,20 @@ class Content {
         if (db_number_of_rows($result) > 0) {
           return true;
         }
+        else {
+            $this->set_parameter('id', false); // The id was specified but an item with that Id doesn't exist so remove the ID from the list of parameters so it doesn't interfere (this situation should not really happen) and insert it with an AI id
+        }
       }
       return false;
     }
 
     function insert($parameters) {
         // If the ID was set, see if an item with that ID exists or not
-        if (isset($parameters['id'])) {
-            // If it does then update that item rather than inserting a new one
-            if ($this->item_exists() != false ) {
-                $result = $this->update(); //coming soon
-                return $result;
-            }
-            // If it doesn't then remove the ID from the list of parameters so it doesn't interfere (this situation should not really happen) and insert it with an AI id
-            else {
-                unset($parameters['id']); //Get rid of the option so it doesn't interfere later
-            }
+        // If it does then update that item rather than inserting a new one
+        if ($this->item_exists() !== false ) {
+            $result = $this->update($parameters); //coming soon
+            return $result;
         }
-
 
         if (count($parameters) < 4) {
             return false;
@@ -149,6 +145,46 @@ class Content {
         $result['insert_id'] = db_last_ai_id();
 
         return $result;
+    }
+
+    function update($parameters) {
+        $id = $this->get_parameter('id');
+        unset($parameters['id']); //Get rid of the ID so it doesn't interfere later
+
+        $sql = "UPDATE patterns SET ";
+
+        if (count($parameters) > 0) {
+            foreach($parameters as $parameter) {
+                $sql .= sprintf("%s = %s, ",
+                    $parameter,
+                    db_escape_string($this->get_parameter($parameter))
+                );
+            }
+            $sql = rtrim($sql, ', ');
+        }
+
+        die_dump($sql);
+
+// WHERE  `patterns`.`id` =95;
+
+        $sql = sprintf("INSERT INTO
+        patterns (
+          %s, %s, %s, %s
+        ) VALUES (
+          '%s', '%s', '%s', '%s'
+        )",
+            db_escape_string($parameters[0]),
+            db_escape_string($parameters[1]),
+            db_escape_string($parameters[2]),
+            db_escape_string($parameters[3]),
+            db_escape_string($this->get_parameter($parameters[0])),
+            db_escape_string($this->get_parameter($parameters[1])),
+            db_escape_string($this->get_parameter($parameters[2])),
+            db_escape_string($this->get_parameter($parameters[3]))
+        );
+
+        $result['successful'] = database_query($sql);
+
     }
 
 }
