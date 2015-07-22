@@ -20,7 +20,7 @@
 
      Eg:
 
-        http://lapis.local.dev/GET/?ORDER_BY=author_id&ORDER=desc&technology=php
+        http://lapis.local.dev/GET/?ORDER_BY=author_id&ORDER=desc
 
 * LIMIT
 
