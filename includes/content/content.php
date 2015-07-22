@@ -12,6 +12,7 @@ class Content {
     var $query_options = [];
 
     function __construct() {
+        $this->database_table = CONTENT_TABLE_NAME;
     }
 
     function set_parameter($name, $value) {
@@ -185,6 +186,10 @@ class Content {
 
         $result['successful'] = database_query($sql);
 
+    }
+
+    function options() {
+        return db_table_column_names($this->database_table);
     }
 
 }
