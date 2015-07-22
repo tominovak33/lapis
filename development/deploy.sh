@@ -31,4 +31,6 @@ rm -rf www # Delete the current web folder
 
 ln -s releases/$DEPLOY_PATH/lapis www # Symlink the new folder that was just cloned
 
+touch www/logs/query_log.txt
+
 echo 'Deployment Complete'
