@@ -44,7 +44,6 @@ function database_query($sql_query) {
     $db_query_count++;
     query_log($sql_query);
     return Database::query($sql_query);
-    die;
 }
 
 
