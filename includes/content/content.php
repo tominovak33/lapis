@@ -82,7 +82,7 @@ class Content {
         }
 
         $sql .= $strict_sql;
-        
+
         $sql = $this->add_options_to_query($sql);
 
         $result = database_query($sql);
