@@ -88,7 +88,34 @@ class Content {
         return $query;
     }
 
+    /*
+    Checks to see if an item in a query already exists in the DB or not
+    */
+    function item_exists() {
+      if ($this->get_parameter('id') != false) {
+        //item id specified
+        $sql = sprintf("SELECT * FROM
+            patterns WHERE
+            id = '%s'
+            ",
+            db_escape_string($this->get_parameter('id'))
+        );
+
+        $result = database_query($sql);
+
+        if (db_number_of_rows($result) > 0) {
+          return true;
+        }
+      }
+      return false;
+    }
+
     function insert($parameters) {
+        if ($this->item_exists() != false ) {
+          $result = $this->update(); //coming soon
+          return result;
+        }
+
         if (count($parameters) < 4) {
             return false;
             //add to error feedback
