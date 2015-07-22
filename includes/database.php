@@ -119,3 +119,13 @@ function db_returned_rows($query_result){
 function db_last_ai_id() {
     return mysqli_insert_id(Database::connect());
 }
+
+function db_table_column_names($table_name) {
+    $table_rows = false;
+    $result = database_query("SHOW COLUMNS FROM " . $table_name);
+
+    while ($row = db_fetch_assoc($result)) {
+        $table_rows[] = $row['Field']; //Add the actual field name of the column
+    }
+    return $table_rows;
+}
