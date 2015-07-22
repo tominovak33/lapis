@@ -44,6 +44,10 @@ switch ($request_type) {
         $response['data'] = $content->insert($keys);
         break;
 
+    case 'OPTIONS':
+        $response['data'] = $content->options();
+        break;
+
     default:
         http_response_code(405);
         header("Access-Control-Allow-Methods: GET, POST");
