@@ -1,5 +1,10 @@
 RewriteEngine on
 RewriteBase /
+
+# Skip redirect rules for the manual testing folder so pages there can be accessed
+RewriteRule ^manual-testing/ - [L]
+RewriteRule ^docs/ - [L]
+
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^(.*)$ /?request=$1 [NC,L,QSA] # Redirect every request to index.php

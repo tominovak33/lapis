@@ -43,7 +43,6 @@ function database_query($sql_query) {
     global $db_query_count;
     $db_query_count++;
     query_log($sql_query);
-
     return Database::query($sql_query);
 }
 
@@ -112,4 +111,21 @@ function db_affected_rows() {
 
 function db_returned_rows($query_result){
     return mysqli_num_rows($query_result);
+}
+
+/*
+ * Returns the auto incremented ID of the last insert or update query
+ */
+function db_last_ai_id() {
+    return mysqli_insert_id(Database::connect());
+}
+
+function db_table_column_names($table_name) {
+    $table_rows = false;
+    $result = database_query("SHOW COLUMNS FROM " . $table_name);
+
+    while ($row = db_fetch_assoc($result)) {
+        $table_rows[] = $row['Field']; //Add the actual field name of the column
+    }
+    return $table_rows;
 }

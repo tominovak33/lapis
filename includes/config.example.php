@@ -25,7 +25,12 @@ define('FRONTEND_DOMAIN', '<frontend_domain>');
 
 
 /*---------------------------
-/ Other Constaints
+/ Content Settings
+/---------------------------*/
+define('CONTENT_TABLE_NAME' , 'patterns');
+
+/*---------------------------
+/ Other Settings
 /---------------------------*/
 //Allow C.O.R.S. between API and frontend application
-header("Access-Control-Allow-Origin: FRONTEND_DOMAIN");
+header("Access-Control-Allow-Origin:" .FRONTEND_DOMAIN );
