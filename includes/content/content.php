@@ -13,6 +13,7 @@ class Content {
 
     function __construct() {
         $this->database_table = CONTENT_TABLE_NAME;
+        $this->strict_columns = array('id', 'author_id'); // todo Allow settings to change this later
     }
 
     function set_parameter($name, $value) {
@@ -34,12 +35,30 @@ class Content {
     function search_by($parameters) {
         $returned_items = [];
 
-        // Are there any parametes - if yes, add them. If not select everything
+        // Most params should be loosely checked, so:  WHERE `col_name` LIKE  '%value%' however if the column is something like an ID (eg: id or author id) then preform an exact match
+        // So check for parameters containing ID and add the exact match for those.
+        // Columns to perform strict matches on should be defined as constants or added as object properties
+        $counter = 0;
+        $strict_sql = '';
+        foreach ($parameters as $strict_column) {
+            if ((in_array($strict_column, $this->strict_columns)) && ($this->get_parameter($strict_column) != false)) {
+                //unset($parameters[$counter]); //Get rid of the option so it doesn't interfere later
+                $strict_sql = sprintf(" AND
+                      %s = '%s'
+                      ",
+                    $strict_column,
+                    db_escape_string($this->get_parameter($strict_column))
+                );
+            }
+            $counter++;
+        }
+
+        // Are there any parameters - if yes, add them. If not select everything
         if (count($parameters) > 0) {
-          $sql = sprintf("SELECT * FROM
-              patterns WHERE
-              %s = '%s'
-              ",
+            $sql = "SELECT * FROM " . $this->database_table . " WHERE";
+
+            // todo stop that sprintf from looking so ridiculous
+            $sql .= sprintf(" %s LIKE '%%%s%%' ",
               $parameters[0],
               db_escape_string($this->get_parameter($parameters[0]))
           );
@@ -48,8 +67,9 @@ class Content {
 
           if (count($parameters) > 0) {
               foreach($parameters as $parameter) {
+                  // todo stop that sprintf from looking so ridiculous
                   $sql .= sprintf(" AND
-                      %s = '%s'
+                      %s LIKE '%%%s%%'
                       ",
                       $parameter,
                       db_escape_string($this->get_parameter($parameter))
@@ -60,6 +80,8 @@ class Content {
         else {
           $sql = "SELECT * FROM patterns WHERE 1 ";
         }
+
+        $sql .= $strict_sql;
 
         $sql = $this->add_options_to_query($sql);
 
