@@ -14,6 +14,8 @@ class Content {
     function __construct() {
         $this->database_table = CONTENT_TABLE_NAME;
         $this->query_options['ORDER_BY'] = false;
+        $this->query_options['ORDER'] = 'ASC';
+        $this->query_options['LIMIT'] =  50;
     }
 
     function set_parameter($name, $value) {
