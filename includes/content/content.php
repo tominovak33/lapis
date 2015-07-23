@@ -217,4 +217,10 @@ class Content {
         return db_table_column_names($this->database_table);
     }
 
+    function get_strict_columns() {
+      if ($this->get_parameter('STRICT') != false) {
+          die_dump($this->get_parameter('STRICT'));
+      }
+    }
+
 }
