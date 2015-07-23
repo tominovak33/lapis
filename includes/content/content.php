@@ -50,7 +50,7 @@ class Content {
         foreach ($parameters as $strict_column) {
             if ((in_array($strict_column, $this->strict_columns)) && ($this->get_parameter($strict_column) != false)) {
                 //unset($parameters[$counter]); //Get rid of the option so it doesn't interfere later
-                $strict_sql = sprintf(" AND
+                $strict_sql .= sprintf(" AND
                       %s = '%s'
                       ",
                     $strict_column,
