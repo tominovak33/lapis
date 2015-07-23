@@ -29,12 +29,13 @@ switch ($request_type) {
             $content->set_query_options($option['name'], $option['value']); // Set theese options as the query options for the current content object so that they can be used later
         }
 
+        $strict = $content->get_strict_columns();
+        unset($_GET['STRICT']);
+
         foreach ($_GET as $key => $value) {
             $keys [] = $key;
             $content->set_parameter($key, $value); // Set all the query params referring to the content itelf as parameters of the current content object
         }
-
-        $strict = $content->get_strict_columns($options);
 
         $response['data'] = $content->search_by($keys); // Perform a search and return all the matching content
         break;

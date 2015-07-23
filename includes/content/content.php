@@ -31,6 +31,10 @@ class Content {
         return $this->parameters[$name];
     }
 
+    function remove_parameter($name) {
+        unset($this->parameters[$name]);
+    }
+
     function get_query_options($option_name) {
         return $this->query_options[$option_name];
     }
@@ -218,8 +222,14 @@ class Content {
     }
 
     function get_strict_columns() {
-      if ($this->get_parameter('STRICT') != false) {
-          die_dump($this->get_parameter('STRICT'));
+      if (isset($_GET['STRICT'])) {
+          $strict_string = $_GET['STRICT'];
+          $strict_string = rtrim($strict_string, ',');
+          $strict_column_names = explode(',', $strict_string);
+          foreach ($strict_column_names as $strict_column_name) {
+            $this->strict_columns[] = $strict_column_name;
+          }
+          unset($_GET['STRICT']);
       }
     }
 
