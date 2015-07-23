@@ -14,7 +14,8 @@ require 'includes/functions.php';
 require 'includes/content/content.php';
 
 $request_type = get_request_type();
-$response = response_setup();
+response_header_setup();
+$response = array();
 
 $content = new Content();
 $keys = [];
@@ -55,6 +56,6 @@ switch ($request_type) {
         $response['error_message'] = "Please use a valid API method";
 }
 
-$response = response_time($response);
+response_stats_headers();
 
 echo json_encode($response, JSON_PRETTY_PRINT); //Add JSON_PRETTY_PRINT as second param if needed to make the output more readable
