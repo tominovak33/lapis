@@ -28,7 +28,7 @@ The documentation will only specify:
         "successful": true,
         "insert_id": 103
     }
-    
+
 ## GET
 
 ### Available Options:
@@ -73,3 +73,46 @@ Due to this a specific, hardcoded list of options is not available in the docume
      "description",
      "code"
     ]
+
+#### Example request:
+Url:
+
+    http://lapis.local.dev/POST/
+
+Post data:
+
+      {
+          "author_id": "5",
+          "technology": "php",
+          "description": "some php code written by author 5",
+          "code": "the code would go here"
+      }
+
+Example with the basic xmlhttp request:
+
+    // Setting up the xmlhttp object
+    var xmlhttp;
+    if (window.XMLHttpRequest){
+      // code for IE7+, Firefox, Chrome, Opera, Safari where xmlhttp request works
+      xmlhttp=new XMLHttpRequest();
+    }
+    else {
+      // code for IE6, IE5
+      xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+      // or alternatively
+      alert('This browser is not supported. Unlucky');
+    }
+
+    // Processing the response when it comes back
+    xmlhttp.onreadystatechange=function(){
+      if (xmlhttp.readyState==4 && xmlhttp.status==200){
+        var response =xmlhttp.responseText;
+        // Process the response here
+      }
+    }
+
+    // Making the request
+    xmlhttp=new XMLHttpRequest();
+    xmlhttp.open("POST","http://lapis.local.dev/POST/",true);
+    xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+    xmlhttp.send("author_id=3333&technology=javascript&description=xmlhttp%20requests&code=this%20is%20the%20code");
