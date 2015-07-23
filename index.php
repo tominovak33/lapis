@@ -13,8 +13,9 @@ require 'includes/database.php';
 require 'includes/functions.php';
 require 'includes/content/content.php';
 
-$request_type = get_request_type();
 response_header_setup();
+
+$request_type = get_request_type();
 $response = array();
 
 $content = new Content();
