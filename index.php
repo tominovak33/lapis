@@ -24,8 +24,6 @@ $keys = [];
 switch ($request_type) {
     case 'GET' :
         $options = get_query_options();
-        $content->query_options['ORDER'] = 'ASC';
-        $content->query_options['LIMIT'] =  50;
 
         foreach ($options as $option) {
             $content->set_query_options($option['name'], $option['value']);
