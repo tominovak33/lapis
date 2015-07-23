@@ -36,30 +36,22 @@ function get_request_type() {
 /*
  * Sets up the response array with standard things such as the timestamp, url etc
  */
-function response_setup() {
-    $response = array();
+function response_header_setup() {
+    header("lapis-request-time: " .$_SERVER['REQUEST_TIME']);
+    header("lapis-request-address: " . $_SERVER['SERVER_ADDR']);
 
-    $response['request_time'] = $_SERVER['REQUEST_TIME'];
-    $response['address'] = $_SERVER['SERVER_ADDR'];
-    $response['finish_time'] = $_SERVER['REQUEST_METHOD'];
-    $response['process_time'] = $_SERVER['REQUEST_METHOD'];
-    $response['database_queries'] = 0;
-
-    $response['software'] = $_SERVER['SERVER_SOFTWARE'];
-    $response['request_method'] = $_SERVER['REQUEST_METHOD'];
-
-    return $response;
+    header("lapis-software: " . $_SERVER['SERVER_SOFTWARE']);
+    header("lapis-request-method: " . $_SERVER['REQUEST_METHOD']);
 }
 
 /*
  * Adds the time when server was finished processing the request and the time taken to deal with the response
  */
-function response_time($response) {
-    $response['finish_time'] = time();
-    $response['process_time'] = $response['finish_time'] - $response['request_time'];
-    $response['database_queries'] = $GLOBALS['db_query_count'];
-
-    return $response;
+function response_stats_headers() {
+    $time = time();
+    header("lapis-finish-time: " . $time);
+    header("lapis-process-time: " . ($time - $_SERVER['REQUEST_TIME']));
+    header("lapis-database-queries: " . $GLOBALS['db_query_count']);
 }
 
 function query_log($query) {

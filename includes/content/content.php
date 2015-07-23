@@ -13,6 +13,9 @@ class Content {
 
     function __construct() {
         $this->database_table = CONTENT_TABLE_NAME;
+        $this->query_options['ORDER_BY'] = false;
+        $this->query_options['ORDER'] = 'ASC';
+        $this->query_options['LIMIT'] =  50;
         $this->strict_columns = array('id', 'author_id'); // todo Allow settings to change this later
     }
 
@@ -95,7 +98,7 @@ class Content {
     }
 
     function add_options_to_query($query) {
-        if ($this->get_query_options('ORDER_BY')) {
+        if ($this->get_query_options('ORDER_BY') != false) {
             $query .= sprintf("ORDER BY patterns.%s %s ",
                 db_escape_string($this->get_query_options('ORDER_BY')),
                 db_escape_string($this->get_query_options('ORDER'))
