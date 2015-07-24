@@ -31,6 +31,10 @@ class Content {
         return $this->parameters[$name];
     }
 
+    function remove_parameter($name) {
+        unset($this->parameters[$name]);
+    }
+
     function get_query_options($option_name) {
         return $this->query_options[$option_name];
     }
@@ -46,7 +50,7 @@ class Content {
         foreach ($parameters as $strict_column) {
             if ((in_array($strict_column, $this->strict_columns)) && ($this->get_parameter($strict_column) != false)) {
                 //unset($parameters[$counter]); //Get rid of the option so it doesn't interfere later
-                $strict_sql = sprintf(" AND
+                $strict_sql .= sprintf(" AND
                       %s = '%s'
                       ",
                     $strict_column,
@@ -215,6 +219,17 @@ class Content {
 
     function options() {
         return db_table_column_names($this->database_table);
+    }
+
+    function get_strict_columns() {
+      if (isset($_GET['STRICT'])) {
+          $strict_string = $_GET['STRICT'];
+          $strict_string = rtrim($strict_string, ',');
+          $strict_column_names = explode(',', $strict_string);
+          foreach ($strict_column_names as $strict_column_name) {
+              $this->strict_columns[] = $strict_column_name;
+          }
+      }
     }
 
 }
