@@ -229,7 +229,6 @@ class Content {
           foreach ($strict_column_names as $strict_column_name) {
             $this->strict_columns[] = $strict_column_name;
           }
-          unset($_GET['STRICT']);
       }
     }
 
