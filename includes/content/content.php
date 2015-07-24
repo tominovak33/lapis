@@ -223,12 +223,12 @@ class Content {
 
     function get_strict_columns() {
       if (isset($_GET['STRICT'])) {
-        $strict_string = $_GET['STRICT'];
-        $strict_string = rtrim($strict_string, ',');
-        $strict_column_names = explode(',', $strict_string);
-        foreach ($strict_column_names as $strict_column_name) {
-          $this->strict_columns[] = $strict_column_name;
-        }
+          $strict_string = $_GET['STRICT'];
+          $strict_string = rtrim($strict_string, ',');
+          $strict_column_names = explode(',', $strict_string);
+          foreach ($strict_column_names as $strict_column_name) {
+              $this->strict_columns[] = $strict_column_name;
+          }
       }
     }
 
