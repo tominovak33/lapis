@@ -25,6 +25,12 @@ switch ($request_type) {
     case 'GET' :
         $options = get_query_options(); // Get the query options of the request (such as ORDER, LIMIT etc which are not referring to the content itself)
 
+        $count_only = false;
+        if (isset($_GET['COUNT'])) {
+          $count_only = true;
+          unset($_GET['COUNT']);
+        }
+
         foreach ($options as $option) {
             $content->set_query_options($option['name'], $option['value']); // Set theese options as the query options for the current content object so that they can be used later
         }
@@ -37,8 +43,14 @@ switch ($request_type) {
             $content->set_parameter($key, $value); // Set all the query params referring to the content itelf as parameters of the current content object
         }
 
-        $response['data'] = $content->search_by($keys); // Perform a search and return all the matching content
+        if ($count_only == true ){
+          $response['data'] = $content->count_matching_items($keys); // Perform a search and return all the matching content
+        }
+        else {
+          $response['data'] = $content->search_by($keys); // Perform a search and return all the matching content
+        }
         break;
+
 
     case 'POST':
         foreach ($_POST as $key => $value) {

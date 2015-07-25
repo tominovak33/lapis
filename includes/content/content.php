@@ -253,4 +253,9 @@ class Content {
       }
     }
 
+    function count_matching_items($parameters) {
+      $matching_items = $this->search_by($parameters);
+      return count($matching_items);
+    }
+
 }
