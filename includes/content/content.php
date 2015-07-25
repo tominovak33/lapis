@@ -16,7 +16,7 @@ class Content {
         $this->query_options['ORDER_BY'] = false;
         $this->query_options['ORDER'] = 'ASC';
         $this->query_options['LIMIT'] =  50;
-        $this->strict_columns = array('id', 'author_id'); // todo Allow settings to change this later
+        $this->strict_columns = unserialize (CONTENT_STRICT_PROPERTIES_ARRAY); // Constant cannot be an array (in PHP < 5.6) so we store it serialised and then unserialise it
     }
 
     function set_parameter($name, $value) {

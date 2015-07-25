@@ -28,6 +28,10 @@ define('FRONTEND_DOMAIN', '<frontend_domain>');
 / Content Settings
 /---------------------------*/
 define('CONTENT_TABLE_NAME' , 'patterns');
+// Sadly with PHP < 5.6 constants cannot be arrays.
+// So to get around this, serialise the array and put _ARRAY at the end of the constants name name (just for ease of use)
+// Then always unserialise any constants that have _ARRAY at the end of their name before using them.
+define ("CONTENT_STRICT_PROPERTIES_ARRAY", serialize (array('id', 'author_id')));
 
 /*---------------------------
 / Other Settings
