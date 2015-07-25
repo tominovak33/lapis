@@ -39,25 +39,37 @@ class Content {
         return $this->query_options[$option_name];
     }
 
+    function get_possible_parameters() {
+      return $this->options(); // Currenty just return the table cols, but later when multiple tables are involved it will be more complex - so making new functio
+    }
+
     function search_by($parameters) {
         $returned_items = [];
 
         // Most params should be loosely checked, so:  WHERE `col_name` LIKE  '%value%' however if the column is something like an ID (eg: id or author id) then preform an exact match
         // So check for parameters containing ID and add the exact match for those.
         // Columns to perform strict matches on should be defined as constants or added as object properties
-        $counter = 0;
+        $counter = -1; // Due to possible early skip, counter is incremented at start of loop, before logic so this way the counter will be 0 (for 0 indexed array work) in the first loop
         $strict_sql = '';
-        foreach ($parameters as $strict_column) {
-            if ((in_array($strict_column, $this->strict_columns)) && ($this->get_parameter($strict_column) != false)) {
+        $possible_parameters = $this->get_possible_parameters();
+
+        foreach ($parameters as $param) {
+            $counter++;
+            // Is the parameter a possible parameter for the current content?
+            if (!in_array($param, $possible_parameters)) {
+                $this->remove_parameter($param); // If not, remove it as otherwise it breaks the query as nothing would match
+                unset($parameters[$counter]); // Get rid of the option so it doesn't interfere later
+                continue; // Skip next part of the foreach as the param is now irrelevant
+            }
+            if ((in_array($param, $this->strict_columns)) && ($this->get_parameter($param) != false)) {
                 //unset($parameters[$counter]); //Get rid of the option so it doesn't interfere later
                 $strict_sql .= sprintf(" AND
                       %s = '%s'
                       ",
-                    $strict_column,
-                    db_escape_string($this->get_parameter($strict_column))
+                    $param,
+                    db_escape_string($this->get_parameter($param))
                 );
             }
-            $counter++;
         }
 
         // Are there any parameters - if yes, add them. If not select everything
