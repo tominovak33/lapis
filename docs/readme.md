@@ -54,6 +54,16 @@ The documentation will only specify:
 
     Accepts an integer to limit amount of responses to. Defaults to 50
 
+* COUNT
+
+    Accepts any value (as long as '&COUNT' is present in the querystring this will get executed)
+
+    Counts and returns the amount of matching items for the query specified. This does not return the items themselves. (Maybe useful for preventing the frontend from receiving a lot of data. But still allowing the user to see if their search would return results )
+
+    Eg:
+
+        http://lapis.local.dev/GET/?technology=php&COUNT
+
 ## POST
 
 ### Available Options
