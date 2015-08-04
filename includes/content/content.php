@@ -44,9 +44,9 @@ class Content {
     }
 
     function set_content_db_table() {
-      if (isset($_GET['content_table']) {
+      if (isset($_GET['content_table'])) {
         $this->database_table = $_GET['content_table'];
-      })
+      }
     }
 
     function valid_search_parameters($parameters) {
