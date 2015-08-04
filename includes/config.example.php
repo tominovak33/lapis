@@ -33,7 +33,7 @@ define('CONTENT_TABLE_NAME' , 'patterns');
 // Then always unserialise any constants that have _ARRAY at the end of their name before using them.
 define ("CONTENT_STRICT_PROPERTIES_ARRAY", serialize (array('id', 'author_id')));
 
-define ("QUERY_OPTIONS_ARRAY", serialize (array('LIMIT', 'ORDER', 'ORDER_BY')) ); // Array of words that cannot be prameters of the content as they are for query options
+define ("QUERY_OPTIONS_ARRAY", serialize (array('LIMIT', 'ORDER', 'ORDER_BY', 'CONTENT')) ); // Array of words that cannot be prameters of the content as they are for query options
 
 /*---------------------------
 / Other Settings

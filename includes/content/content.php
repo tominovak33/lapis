@@ -43,6 +43,12 @@ class Content {
       return $this->options(); // Currenty just return the table cols, but later when multiple tables are involved it will be more complex - so making new functio
     }
 
+    function set_content_db_table() {
+      if (isset($_GET['content_table']) {
+        $this->database_table = $_GET['content_table'];
+      })
+    }
+
     function valid_search_parameters($parameters) {
       $counter = -1; // Due to possible early skip, counter is incremented at start of loop, before logic so this way the counter will be 0 (for 0 indexed array work) in the first loop
       $possible_parameters = $this->get_possible_parameters();
