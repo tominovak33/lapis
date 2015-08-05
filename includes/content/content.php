@@ -12,7 +12,7 @@ class Content {
     var $query_options = [];
 
     function __construct() {
-        $this->database_table = CONTENT_TABLE_NAME;
+        $this->database_table = $this->set_content_db_table();
         $this->query_options['ORDER_BY'] = false;
         $this->query_options['ORDER'] = 'ASC';
         $this->query_options['LIMIT'] =  50;
@@ -41,6 +41,17 @@ class Content {
 
     function get_possible_parameters() {
       return $this->options(); // Currenty just return the table cols, but later when multiple tables are involved it will be more complex - so making new functio
+    }
+
+    function set_content_db_table() {
+      $content_table = CONTENT_TABLE_NAME;
+
+      if (isset($_GET['CONTENT_TABLE'])) {
+        $content_table = $_GET['CONTENT_TABLE'];
+        unset($_GET['CONTENT_TABLE']);
+      }
+
+      return $content_table;
     }
 
     function valid_search_parameters($parameters) {
