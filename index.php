@@ -35,9 +35,6 @@ switch ($request_type) {
             $content->set_query_options($option['name'], $option['value']); // Set theese options as the query options for the current content object so that they can be used later
         }
 
-        $content->set_content_db_table();
-        unset($_GET['CONTENT_TABLE']);
-
         $strict = $content->get_strict_columns();
         unset($_GET['STRICT']);
 
