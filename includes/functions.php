@@ -57,7 +57,10 @@ function response_stats_headers() {
 function query_log($query) {
     if (LOG_DB_QUERIES == true) {
         $query = str_replace("\n", ' ' , $query);
-        $query = str_replace("             ", ' ' , $query); //Replace the massive spaces that my sprintf functions insert
+
+        for ($counter = 1; $counter <= 50; $counter++) {
+            $query = str_replace("  ", ' ' , $query); //Replace the massive spaces that my sprintf functions insert 
+        }
 
         if (!file_exists('logs/query_log.txt')) {
             $tmp = fopen("logs/query_log.txt", "w");

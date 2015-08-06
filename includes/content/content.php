@@ -50,11 +50,15 @@ class Content {
         $content_table = $_GET['CONTENT_TABLE'];
         unset($_GET['CONTENT_TABLE']);
       }
+      elseif (isset($_POST['CONTENT_TABLE'])) {
+        $content_table = $_POST['CONTENT_TABLE'];
+        unset($_POST['CONTENT_TABLE']);
+      }
 
       return $content_table;
     }
 
-    function valid_search_parameters($parameters) {
+    function valid_content_parameters($parameters) {
       $counter = -1; // Due to possible early skip, counter is incremented at start of loop, before logic so this way the counter will be 0 (for 0 indexed array work) in the first loop
       $possible_parameters = $this->get_possible_parameters();
 
@@ -78,7 +82,7 @@ class Content {
         // Columns to perform strict matches on should be defined as constants or added as object properties
         $strict_sql = '';
 
-        $parameters = $this->valid_search_parameters($parameters);
+        $parameters = $this->valid_content_parameters($parameters);
 
         foreach ($parameters as $strict_column) {
             if ((in_array($strict_column, $this->strict_columns)) && ($this->get_parameter($strict_column) != false)) {
@@ -117,7 +121,7 @@ class Content {
           }
         }
         else {
-          $sql = "SELECT * FROM patterns WHERE 1 ";
+          $sql = "SELECT * FROM $this->database_table WHERE 1 ";
         }
 
         $sql .= $strict_sql;
@@ -135,7 +139,7 @@ class Content {
 
     function add_options_to_query($query) {
         if ($this->get_query_options('ORDER_BY') != false) {
-            $query .= sprintf("ORDER BY patterns.%s %s ",
+            $query .= sprintf("ORDER BY $this->database_table.%s %s ",
                 db_escape_string($this->get_query_options('ORDER_BY')),
                 db_escape_string($this->get_query_options('ORDER'))
             );
@@ -157,7 +161,7 @@ class Content {
       if ($this->get_parameter('id') != false) {
         //item id specified
         $sql = sprintf("SELECT * FROM
-            patterns WHERE
+            $this->database_table WHERE
             id = '%s'
             ",
             db_escape_string($this->get_parameter('id'))
@@ -183,25 +187,27 @@ class Content {
             return $result;
         }
 
-        if (count($parameters) < 4) {
-            return false;
-            //add to error feedback
+        $parameters = $this->valid_content_parameters($parameters);
+
+        $sql_start = "INSERT INTO $this->database_table (";
+        $sql_columns = '';
+        $sql_values = '';
+
+        if (count($parameters) > 0) {
+            foreach($parameters as $parameter) {
+              $sql_columns .= sprintf("%s, ",
+                  db_escape_string($parameter)
+              );
+              $sql_values .= sprintf("'%s', ",
+                  db_escape_string($this->get_parameter($parameter))
+              );
+            }
+            $sql_columns = rtrim($sql_columns, ', ');
+            $sql_values = rtrim($sql_values, ', ');
+
         }
-        $sql = sprintf("INSERT INTO
-        patterns (
-          %s, %s, %s, %s
-        ) VALUES (
-          '%s', '%s', '%s', '%s'
-        )",
-            db_escape_string($parameters[0]),
-            db_escape_string($parameters[1]),
-            db_escape_string($parameters[2]),
-            db_escape_string($parameters[3]),
-            db_escape_string($this->get_parameter($parameters[0])),
-            db_escape_string($this->get_parameter($parameters[1])),
-            db_escape_string($this->get_parameter($parameters[2])),
-            db_escape_string($this->get_parameter($parameters[3]))
-        );
+
+        $sql = $sql_start . $sql_columns . ') VALUES ( ' . $sql_values . ')';
 
         $result['successful'] = database_query($sql);
         $result['insert_id'] = db_last_ai_id();
@@ -213,37 +219,22 @@ class Content {
         $id = $this->get_parameter('id');
         unset($parameters['id']); //Get rid of the ID so it doesn't interfere later
 
-        $sql = "UPDATE patterns SET ";
+        $sql = "UPDATE $this->database_table SET ";
 
         if (count($parameters) > 0) {
             foreach($parameters as $parameter) {
-                $sql .= sprintf("%s = %s, ",
-                    $parameter,
-                    db_escape_string($this->get_parameter($parameter))
-                );
+              if ($parameter == 'id') {
+                continue;
+              }
+              $sql .= sprintf("%s = '%s', ",
+                  $parameter,
+                  db_escape_string($this->get_parameter($parameter))
+              );
             }
             $sql = rtrim($sql, ', ');
         }
 
-        die_dump($sql);
-
-// WHERE  `patterns`.`id` =95;
-
-        $sql = sprintf("INSERT INTO
-        patterns (
-          %s, %s, %s, %s
-        ) VALUES (
-          '%s', '%s', '%s', '%s'
-        )",
-            db_escape_string($parameters[0]),
-            db_escape_string($parameters[1]),
-            db_escape_string($parameters[2]),
-            db_escape_string($parameters[3]),
-            db_escape_string($this->get_parameter($parameters[0])),
-            db_escape_string($this->get_parameter($parameters[1])),
-            db_escape_string($this->get_parameter($parameters[2])),
-            db_escape_string($this->get_parameter($parameters[3]))
-        );
+        $sql .= " WHERE id = $id ";
 
         $result['successful'] = database_query($sql);
 
