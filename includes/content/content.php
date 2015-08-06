@@ -57,8 +57,11 @@ class Content {
 
       $tables = list_tables();
 
-      if (in_array($content_table, $tables) && $content_table != '') {
+      if (in_array($content_table, $tables)) {
         return $content_table;
+      }
+      elseif ($content_table != '') {
+        // Error
       }
 
       return CONTENT_TABLE_NAME;
