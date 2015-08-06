@@ -129,3 +129,16 @@ function db_table_column_names($table_name) {
     }
     return $table_rows;
 }
+
+function list_tables() {
+    $tables = false;
+    $result = database_query("SHOW TABLES");
+
+    while ($row = db_fetch_assoc($result)) {
+        foreach ($row as $table_name) {
+            $tables[] = $table_name;
+        }
+    }
+
+    return $tables;
+}

@@ -55,7 +55,14 @@ class Content {
         unset($_POST['CONTENT_TABLE']);
       }
 
-      return $content_table;
+      $tables = list_tables();
+
+      if (in_array($content_table, $tables) && $content_table != '') {
+        return $content_table;
+      }
+
+      return CONTENT_TABLE_NAME;
+      
     }
 
     function valid_content_parameters($parameters) {
