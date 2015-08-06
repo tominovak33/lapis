@@ -194,21 +194,27 @@ class Content {
             //add to error feedback
         }
 
-        $sql = sprintf("INSERT INTO
-        $this->database_table (
-          %s, %s, %s, %s
-        ) VALUES (
-          '%s', '%s', '%s', '%s'
-        )",
-            db_escape_string($parameters[0]),
-            db_escape_string($parameters[1]),
-            db_escape_string($parameters[2]),
-            db_escape_string($parameters[3]),
-            db_escape_string($this->get_parameter($parameters[0])),
-            db_escape_string($this->get_parameter($parameters[1])),
-            db_escape_string($this->get_parameter($parameters[2])),
-            db_escape_string($this->get_parameter($parameters[3]))
-        );
+        $sql_start = "INSERT INTO $this->database_table (";
+
+        $sql_columns = '';
+
+        $sql_values = '';
+
+        if (count($parameters) > 0) {
+            foreach($parameters as $parameter) {
+              $sql_columns .= sprintf("%s, ",
+                  db_escape_string($parameter)
+              );
+              $sql_values .= sprintf("'%s', ",
+                  db_escape_string($this->get_parameter($parameter))
+              );
+            }
+            $sql_columns = rtrim($sql_columns, ', ');
+            $sql_values = rtrim($sql_values, ', ');
+
+        }
+
+        $sql = $sql_start . $sql_columns . ') VALUES ( ' . $sql_values . ')';
 
         $result['successful'] = database_query($sql);
         $result['insert_id'] = db_last_ai_id();
