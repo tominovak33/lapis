@@ -190,7 +190,7 @@ class Content {
         $parameters = $this->valid_content_parameters($parameters);
 
         if (count($parameters) < 4) {
-            return false;
+            //return false;
             //add to error feedback
         }
 
@@ -236,7 +236,7 @@ class Content {
         }
 
         $sql .= " WHERE id = $id ";
-        
+
         $result['successful'] = database_query($sql);
 
     }
