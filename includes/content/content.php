@@ -189,15 +189,8 @@ class Content {
 
         $parameters = $this->valid_content_parameters($parameters);
 
-        if (count($parameters) < 4) {
-            //return false;
-            //add to error feedback
-        }
-
         $sql_start = "INSERT INTO $this->database_table (";
-
         $sql_columns = '';
-
         $sql_values = '';
 
         if (count($parameters) > 0) {
