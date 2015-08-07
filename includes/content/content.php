@@ -55,7 +55,19 @@ class Content {
         unset($_POST['CONTENT_TABLE']);
       }
 
-      return $content_table;
+      $tables = list_tables();
+
+      if (in_array($content_table, $tables)) {
+        return $content_table;
+      }
+      elseif ($content_table != '') {
+        $GLOBALS['error'] = "Table does not exist";
+        $GLOBALS['error_message'] = "The table you specified id not in the database";
+        return_error_response();
+      }
+
+      return CONTENT_TABLE_NAME;
+      
     }
 
     function valid_content_parameters($parameters) {

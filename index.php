@@ -71,6 +71,9 @@ switch ($request_type) {
         $response['error_message'] = "Please use a valid API method";
 }
 
+$response['error'] = $GLOBALS["error"];
+$response['error_message'] = $GLOBALS["error"];
+
 response_stats_headers(); // Create the headers that refer to statistics of the request
 
 echo json_encode($response, JSON_PRETTY_PRINT); //Add JSON_PRETTY_PRINT as second param if needed to make the output more readable

@@ -91,3 +91,17 @@ function get_query_options() {
 
     return $options;
 }
+
+/*
+Use this if an error needs to be returned immediately
+*/
+function return_error_response() {
+
+    response_stats_headers(); // Create the headers that refer to statistics of the request
+
+    $response['error'] = $GLOBALS["error"];
+    $response['error_message'] = $GLOBALS["error"];
+    
+    echo json_encode($response, JSON_PRETTY_PRINT); //Add JSON_PRETTY_PRINT as second param if needed to make the output more readable
+    die();
+}
