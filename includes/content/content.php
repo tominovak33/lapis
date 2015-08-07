@@ -61,7 +61,9 @@ class Content {
         return $content_table;
       }
       elseif ($content_table != '') {
-        // Error
+        $GLOBALS['error'] = "Table does not exist";
+        $GLOBALS['error_message'] = "The table you specified id not in the database";
+        return_error_response();
       }
 
       return CONTENT_TABLE_NAME;
