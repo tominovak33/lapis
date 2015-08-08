@@ -75,6 +75,10 @@ switch ($request_type) {
 $response['error'] = $GLOBALS["error"];
 $response['error_message'] = $GLOBALS["error"];
 
+if ($response['error'] == null ){
+    unset($response['error']);
+    unset($response['error_message']);
+}
 response_stats_headers(); // Create the headers that refer to statistics of the request
 
 echo json_encode($response, JSON_PRETTY_PRINT); //Add JSON_PRETTY_PRINT as second param if needed to make the output more readable
