@@ -60,4 +60,12 @@ class User {
     return $this->first_name;   
   }
 
+  function get_request_username() {
+    return $_POST['REQUEST_USERNAME'];
+  }
+
+  function get_request_password() {
+    return $_POST['REQUEST_PASSWORD'];
+  }
+
 }
