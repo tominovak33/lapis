@@ -77,6 +77,8 @@ class User {
 
     $result = database_query($sql);
     $row = db2_fetch_assoc($result);
+
+    // Populate user properties from the returned array here
   }
 
 
