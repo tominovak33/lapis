@@ -40,6 +40,7 @@ function get_request_user_id() {
         $user->get_user();
         return $user;
     }
+    return false;
 }
 
 /*
