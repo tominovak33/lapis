@@ -33,6 +33,15 @@ function get_request_type() {
     return strtoupper($request_type);
 }
 
+function get_request_user_id() {
+    if (isset($_POST['REQUEST_USER'])) {
+        $user = new User();
+        $user->user_id = $_POST['REQUEST_USER'];
+        $user->get_user();
+        return $user;
+    }
+}
+
 /*
  * Sets up the response array with standard things such as the timestamp, url etc
  */

@@ -69,18 +69,16 @@ class User {
   }
 
   function get_user() {
-    if (!isset($this->user_id) {
+    if (!isset($this->user_id)) {
       return false;
     }
 
     $sql = 'SELECT * FROM api_users WHERE user_id=\'' . db_escape_string($this->user_id) . '\'';
 
     $result = database_query($sql);
-    $row = db2_fetch_assoc($result);
+    $row = db_fetch_assoc($result);
 
-    populate_user_object($user_details);
-
-    return true;
+    return $this->populate_user_object($row);;
   }
 
   function populate_user_object($user_details) {
@@ -88,7 +86,6 @@ class User {
     if(isset($user_details["username"])) $this->set_username($user_details['username']);
     if(isset($user_details["first_name"])) $this->set_first_name($user_details['first_name']);
     if(isset($user_details["last_name"])) $this->set_last_name($user_details['last_name']);
-    if(isset($user_details["email"])) $this->set_email($user_details['email']);
     if(isset($user_details["password"])) $this->set_password_hash($user_details['password']);
 
     return true;

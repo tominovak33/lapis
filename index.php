@@ -17,7 +17,7 @@ require 'includes/content/content.php';
 response_header_setup(); // Set the initial headers for the response
 $response = []; // Set up the response array which will be converted to json at the end of the request
 
-$user = new User();
+$user = get_request_user_id();
 $content = new Content(); // Initialise the new 'content' object
 $keys = [];
 
