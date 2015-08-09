@@ -68,4 +68,16 @@ class User {
     return $_POST['REQUEST_PASSWORD'];
   }
 
+  function get_user() {
+    if (!isset($this->user_id) {
+      return false;
+    }
+
+    $sql = 'SELECT * FROM api_users WHERE user_id=\'' . db_escape_string($this->user_id) . '\'';
+
+    $result = database_query($sql);
+    $row = db2_fetch_assoc($result);
+  }
+
+
 }
