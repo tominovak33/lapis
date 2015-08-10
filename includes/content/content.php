@@ -10,6 +10,8 @@ class Content {
 
     var $parameters = [];
     var $query_options = [];
+    var $owner_id = 0;
+    var $permissions = 600;
 
     function __construct() {
         $this->database_table = $this->set_content_db_table();
@@ -76,6 +78,22 @@ class Content {
 
       return CONTENT_TABLE_NAME;
       
+    }
+
+    function set_owner_id($owner_id) {
+      $this->owner_id = $owner_id;
+    }
+    
+    function get_owner_id() {
+      return $this->owner_id;
+    }
+    
+    function set_permissions($permissions) {
+      $this->permissions = $permissions;
+    }
+
+    function get_permissions() {
+      return $this->permissions;
     }
 
     function valid_content_parameters($parameters) {
