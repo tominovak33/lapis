@@ -80,6 +80,7 @@ class Content {
       
     }
 
+/*  most likey remove this later
     function set_owner_id($owner_id) {
       $this->owner_id = $owner_id;
     }
@@ -95,7 +96,7 @@ class Content {
     function get_permissions() {
       return $this->permissions;
     }
-
+*/
     function valid_content_parameters($parameters) {
       $counter = -1; // Due to possible early skip, counter is incremented at start of loop, before logic so this way the counter will be 0 (for 0 indexed array work) in the first loop
       $possible_parameters = $this->get_possible_parameters();
@@ -161,7 +162,7 @@ class Content {
         else {
           $sql = "SELECT * FROM $this->database_table WHERE 1 ";
         }
-        
+
         $sql .= $strict_sql;
 
         $sql = $this->add_options_to_query($sql);
@@ -217,7 +218,12 @@ class Content {
       return false;
     }
 
-    function insert($parameters) {
+    function insert() {
+        $parameters = [];
+        foreach ($this->parameters as $key => $value ) {
+          $parameters[] = $key;
+        }
+
         // If the ID was set, see if an item with that ID exists or not
         // If it does then update that item rather than inserting a new one
         if ($this->item_exists() !== false ) {
