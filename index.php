@@ -55,10 +55,16 @@ switch ($request_type) {
 
 
     case 'POST':
+        $content->owner_id = ($user ? $user->user_id : 0);
+
         foreach ($_POST as $key => $value) {
             $keys [] = $key;
             $content->set_parameter($key, $value); // Set all the query properties referring to the content itelf as parameters of the current content object
         }
+
+
+        die_dump($content); 
+        
         $response['data'] = $content->insert($keys); // Insert the current content object into the DB (this may actually perform an update if the content already exists)
         break;
 
