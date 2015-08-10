@@ -73,7 +73,7 @@ class User {
       return false;
     }
 
-    $sql = 'SELECT * FROM api_users WHERE user_id=\'' . db_escape_string($this->user_id) . '\'';
+    $sql = 'SELECT * FROM API_USERS_TABLE WHERE user_id=\'' . db_escape_string($this->user_id) . '\'';
 
     $result = database_query($sql);
     $row = db_fetch_assoc($result);
