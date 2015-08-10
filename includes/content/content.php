@@ -10,6 +10,8 @@ class Content {
 
     var $parameters = [];
     var $query_options = [];
+    var $owner_id = 0;
+    var $permissions = 600;
 
     function __construct() {
         $this->database_table = $this->set_content_db_table();
@@ -57,6 +59,14 @@ class Content {
 
       $tables = list_tables();
 
+      if ($content_table == API_USERS_TABLE) {
+        // Someone is trying to do something bad..... but we shouldn't give away the fact that the table they queried for contains sensitive information. 
+        // So rather than return some weird error, act like the table does not exist
+        $GLOBALS['error'] = "Table does not exist";
+        $GLOBALS['error_message'] = "The table you specified id not in the database";
+        return_error_response();
+      }
+
       if (in_array($content_table, $tables)) {
         return $content_table;
       }
@@ -70,6 +80,23 @@ class Content {
       
     }
 
+/*  most likey remove this later
+    function set_owner_id($owner_id) {
+      $this->owner_id = $owner_id;
+    }
+    
+    function get_owner_id() {
+      return $this->owner_id;
+    }
+    
+    function set_permissions($permissions) {
+      $this->permissions = $permissions;
+    }
+
+    function get_permissions() {
+      return $this->permissions;
+    }
+*/
     function valid_content_parameters($parameters) {
       $counter = -1; // Due to possible early skip, counter is incremented at start of loop, before logic so this way the counter will be 0 (for 0 indexed array work) in the first loop
       $possible_parameters = $this->get_possible_parameters();
@@ -191,7 +218,12 @@ class Content {
       return false;
     }
 
-    function insert($parameters) {
+    function insert() {
+        $parameters = [];
+        foreach ($this->parameters as $key => $value ) {
+          $parameters[] = $key;
+        }
+
         // If the ID was set, see if an item with that ID exists or not
         // If it does then update that item rather than inserting a new one
         if ($this->item_exists() !== false ) {

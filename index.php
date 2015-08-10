@@ -11,11 +11,13 @@ header("Content-Type: application/json");
 require 'includes/config.php';
 require 'includes/database.php';
 require 'includes/functions.php';
+require 'includes/user.php';
 require 'includes/content/content.php';
 
 response_header_setup(); // Set the initial headers for the response
 $response = []; // Set up the response array which will be converted to json at the end of the request
 
+$user = get_request_user_id();
 $content = new Content(); // Initialise the new 'content' object
 $keys = [];
 
@@ -53,11 +55,16 @@ switch ($request_type) {
 
 
     case 'POST':
+        $owner_id = ($user ? $user->user_id : 0);
+
+        $content->set_parameter('owner_id', $owner_id);
+
         foreach ($_POST as $key => $value) {
             $keys [] = $key;
             $content->set_parameter($key, $value); // Set all the query properties referring to the content itelf as parameters of the current content object
         }
-        $response['data'] = $content->insert($keys); // Insert the current content object into the DB (this may actually perform an update if the content already exists)
+        
+        $response['data'] = $content->insert(); // Insert the current content object into the DB (this may actually perform an update if the content already exists)
         break;
 
     case 'OPTIONS':
@@ -75,6 +82,10 @@ switch ($request_type) {
 $response['error'] = $GLOBALS["error"];
 $response['error_message'] = $GLOBALS["error"];
 
+if ($response['error'] == null ){
+    unset($response['error']);
+    unset($response['error_message']);
+}
 response_stats_headers(); // Create the headers that refer to statistics of the request
 
 echo json_encode($response, JSON_PRETTY_PRINT); //Add JSON_PRETTY_PRINT as second param if needed to make the output more readable

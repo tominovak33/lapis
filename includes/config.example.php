@@ -35,6 +35,8 @@ define ("CONTENT_STRICT_PROPERTIES_ARRAY", serialize (array('id', 'author_id')))
 
 define ("QUERY_OPTIONS_ARRAY", serialize (array('LIMIT', 'ORDER', 'ORDER_BY', 'CONTENT')) ); // Array of words that cannot be prameters of the content as they are for query options
 
+define('API_USERS_TABLE' , 'api_users');
+
 /*---------------------------
 / Other Settings
 /---------------------------*/
