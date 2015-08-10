@@ -57,6 +57,14 @@ class Content {
 
       $tables = list_tables();
 
+      if ($content_table == API_USERS_TABLE) {
+        // Someone is trying to do something bad..... but we shouldn't give away the fact that the table they queried for contains sensitive information. 
+        // So rather than return some weird error, act like the table does not exist
+        $GLOBALS['error'] = "Table does not exist";
+        $GLOBALS['error_message'] = "The table you specified id not in the database";
+        return_error_response();
+      }
+
       if (in_array($content_table, $tables)) {
         return $content_table;
       }
