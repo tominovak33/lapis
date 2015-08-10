@@ -61,9 +61,6 @@ switch ($request_type) {
             $keys [] = $key;
             $content->set_parameter($key, $value); // Set all the query properties referring to the content itelf as parameters of the current content object
         }
-
-
-        die_dump($content); 
         
         $response['data'] = $content->insert($keys); // Insert the current content object into the DB (this may actually perform an update if the content already exists)
         break;

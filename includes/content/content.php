@@ -161,7 +161,7 @@ class Content {
         else {
           $sql = "SELECT * FROM $this->database_table WHERE 1 ";
         }
-
+        
         $sql .= $strict_sql;
 
         $sql = $this->add_options_to_query($sql);
