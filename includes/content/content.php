@@ -10,14 +10,14 @@ class Content {
 
     var $parameters = [];
     var $query_options = [];
-    var $owner_id = 0;
-    var $permissions = 600;
 
     function __construct() {
         $this->database_table = $this->set_content_db_table();
         $this->query_options['ORDER_BY'] = false;
         $this->query_options['ORDER'] = 'ASC';
         $this->query_options['LIMIT'] =  50;
+        $this->parameters['owner_id'] = 0; // By default there is no owner
+        $this->parameters['public'] = 1; // By defult all things are public
         $this->strict_columns = unserialize (CONTENT_STRICT_PROPERTIES_ARRAY); // Constant cannot be an array (in PHP < 5.6) so we store it serialised and then unserialise it
     }
 
