@@ -130,6 +130,12 @@ function db_table_column_names($table_name) {
     return $table_rows;
 }
 
+function add_table_column($table, $column, $type, $length) {
+    $sql = "ALTER TABLE `$table` ADD `$column` $type($length) NOT NULL";
+    
+    $result = database_query($sql);
+}
+
 function list_tables() {
     $tables = false;
     $result = database_query("SHOW TABLES");
