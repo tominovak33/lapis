@@ -80,23 +80,6 @@ class Content {
       
     }
 
-/*  most likey remove this later
-    function set_owner_id($owner_id) {
-      $this->owner_id = $owner_id;
-    }
-    
-    function get_owner_id() {
-      return $this->owner_id;
-    }
-    
-    function set_permissions($permissions) {
-      $this->permissions = $permissions;
-    }
-
-    function get_permissions() {
-      return $this->permissions;
-    }
-*/
     function valid_content_parameters($parameters) {
       $counter = -1; // Due to possible early skip, counter is incremented at start of loop, before logic so this way the counter will be 0 (for 0 indexed array work) in the first loop
       $possible_parameters = $this->get_possible_parameters();
@@ -113,7 +96,7 @@ class Content {
       return $parameters;
     }
 
-    function search_by($parameters) {
+    function search_by($parameters, $user = false) {
         $returned_items = [];
 
         // Most params should be loosely checked, so:  WHERE `col_name` LIKE  '%value%' however if the column is something like an ID (eg: id or author id) then preform an exact match
@@ -162,6 +145,14 @@ class Content {
         else {
           $sql = "SELECT * FROM $this->database_table WHERE 1 ";
         }
+
+        $user_id = ($user ? $user->user_id : 0);
+
+        $strict_sql .= ' AND ( ';
+        $strict_sql .= $this->add_restriction_sql('public', '1');
+        $strict_sql .= ' OR ';
+        $strict_sql .= $this->add_restriction_sql('owner_id', $user_id);
+        $strict_sql .= ' ) ';
 
         $sql .= $strict_sql;
 
@@ -282,6 +273,15 @@ class Content {
 
         $result['successful'] = database_query($sql);
 
+    }
+
+    function add_restriction_sql($column, $value) {
+      $sql = sprintf("%s = '%s' ",
+        db_escape_string($column),
+        db_escape_string($value)
+      );
+
+      return $sql;
     }
 
     function options() {

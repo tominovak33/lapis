@@ -18,6 +18,7 @@ class User {
 
   function __construct() {
     // coming soon
+    $this->user_id = 0;
   }
 
   function set_user_id($new_user_id) {

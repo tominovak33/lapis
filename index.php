@@ -49,7 +49,7 @@ switch ($request_type) {
           $response['data'] = $content->count_matching_items($keys); // Perform a search and return all the matching content
         }
         else {
-          $response['data'] = $content->search_by($keys); // Perform a search and return all the matching content
+          $response['data'] = $content->search_by($keys, $user); // Perform a search and return all the matching content
         }
         break;
 
