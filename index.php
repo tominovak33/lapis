@@ -79,12 +79,9 @@ switch ($request_type) {
         return_error_response();
 }
 
-$response['error'] = $GLOBALS["error"];
-$response['error_message'] = $GLOBALS["error"];
-
-if ($response['error'] == null ){
-    unset($response['error']);
-    unset($response['error_message']);
+if (isset($GLOBALS["error"])){
+    $response['error'] = $GLOBALS["error"];
+    $response['error_message'] = $GLOBALS["error_message"];
 }
 response_stats_headers(); // Create the headers that refer to statistics of the request
 
