@@ -7,6 +7,6 @@ Lapis - Todo list
 ## Suggested features
 
 * Set up automatic deployment when a pr is created (have wildcard Apache set up so $1.lapis.dev goes to /home/lapis/$1 - maybe create separate repo for this setup with the github webhook)
-
+* Install sctipt that creates a basic database etc
 
 ### Users and API auth
