@@ -39,6 +39,8 @@ define('API_USERS_TABLE' , 'api_users');
 
 define('RESTRICTED_TABLES' , serialize(array('api_users'))); // A list of tables that the end users cannot simply query data from or add to
 
+define('USE_DEFAULT_QUERY_RESTRICTIONS' , true);
+
 define('DEFAULT_CONTENT_FIELDS', serialize(array('owner_id', 'public')));
 
 /*---------------------------

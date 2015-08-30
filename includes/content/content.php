@@ -148,13 +148,17 @@ class Content {
 
         $user_id = ($user ? $user->user_id : 0);
 
-        $strict_sql .= ' AND ( ';
-        $strict_sql .= $this->add_restriction_sql('public', '1');
-        $strict_sql .= ' OR ';
-        $strict_sql .= $this->add_restriction_sql('owner_id', $user_id);
-        $strict_sql .= ' ) ';
+        if (USE_DEFAULT_QUERY_RESTRICTIONS == true) {
 
-        $sql .= $strict_sql;
+          $strict_sql .= ' AND ( ';
+          $strict_sql .= $this->add_restriction_sql('public', '1');
+          $strict_sql .= ' OR ';
+          $strict_sql .= $this->add_restriction_sql('owner_id', $user_id);
+          $strict_sql .= ' ) ';
+
+          $sql .= $strict_sql;
+
+        }
 
         $sql = $this->add_options_to_query($sql);
 
