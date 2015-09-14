@@ -260,6 +260,8 @@ class Content {
 
         $sql = "UPDATE $this->database_table SET ";
 
+        $parameters = $this->valid_content_parameters($parameters);
+
         if (count($parameters) > 0) {
             foreach($parameters as $parameter) {
               if ($parameter == 'id') {
