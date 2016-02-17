@@ -7,7 +7,7 @@ RewriteRule ^docs/ - [L]
 
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^(.*)$ /?request=$1 [NC,L,QSA] # Redirect every request to index.php
+RewriteRule ^(.*)$ /api/?request=$1 [NC,L,QSA] # Redirect every request to index.php
 
 # Prevent access to git and development folder
 RedirectMatch 404 /\.git

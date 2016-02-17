@@ -26,6 +26,9 @@ function die_dump($data) {
  * such as http://lapis.local.dev/POST/?foo=bar and passes it to  http://lapis.local.dev/index.php with GET['request'] set to "POST"
  */
 function get_request_type() {
+    if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
+        return 'OPTIONS';
+    }
     $request_url = rtrim($_GET['request'], '/');
     array_shift($_GET); // remove the request type so we can loop through all actual params
     $exploded_url = explode('/', $request_url);
@@ -114,4 +117,10 @@ function return_error_response() {
     
     echo json_encode($response, JSON_PRETTY_PRINT); //Add JSON_PRETTY_PRINT as second param if needed to make the output more readable
     die();
+}
+
+
+function unauthorised() {
+    header('HTTP/1.0 401 Unauthorized');
+    exit();
 }

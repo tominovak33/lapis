@@ -12,6 +12,7 @@ require 'includes/config.php';
 require 'includes/database.php';
 require 'includes/functions.php';
 require 'includes/user.php';
+require 'includes/authentication.php';
 require 'includes/content/content.php';
 
 response_header_setup(); // Set the initial headers for the response
@@ -65,6 +66,26 @@ switch ($request_type) {
         }
         
         $response['data'] = $content->insert(); // Insert the current content object into the DB (this may actually perform an update if the content already exists)
+        break;
+
+    case 'LOGIN':
+        $authenticated = login();
+        if ($authenticated) {
+            $response = $authenticated;
+        } else {
+            // Return 401 error
+            unauthorised();
+        }
+        break;
+
+    case 'AUTHENTICATE':
+        $username = checkToken();
+        if ($username) {
+            $response['authenticatedUser'] = $username;
+        } else {
+            // Return 401 error
+            unauthorised();
+        }
         break;
 
     case 'OPTIONS':

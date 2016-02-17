@@ -153,7 +153,7 @@ class Content {
           $strict_sql .= ' AND ( ';
           $strict_sql .= $this->add_restriction_sql('public', '1');
           $strict_sql .= ' OR ';
-          $strict_sql .= $this->add_restriction_sql('owner_id', $user_id);
+          $strict_sql .= $this->add_restriction_sql('ownerID', $user_id);
           $strict_sql .= ' ) ';
 
           $sql .= $strict_sql;
