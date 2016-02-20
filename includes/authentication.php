@@ -24,9 +24,12 @@ function login() {
 }
 
 function checkToken() {
-    $username = $_SERVER['HTTP_X_AUTH_USERNAME'];
-    $token = $_SERVER['HTTP_X_AUTH_TOKEN'];
-    return validateToken($username, $token);
+    if (isset($_SERVER['HTTP_X_AUTH_USERNAME']) && isset($_SERVER['HTTP_X_AUTH_TOKEN'])){
+        $username = $_SERVER['HTTP_X_AUTH_USERNAME'];
+        $token = $_SERVER['HTTP_X_AUTH_TOKEN'];
+        return validateToken($username, $token);
+    }
+    return false;
 }
 
 function insertToken($username, $token) {
@@ -106,7 +109,7 @@ function validateToken ($username, $token) {
     return false;
 }
 
-function getRequestUser () {
+function getRequestUserID () {
     $username = $_SERVER['HTTP_X_AUTH_USERNAME'];
 
     if (isset($_SERVER['HTTP_X_AUTH_PASSWORD'])) {

@@ -16,8 +16,8 @@ class Content {
         $this->query_options['ORDER_BY'] = false;
         $this->query_options['ORDER'] = 'ASC';
         $this->query_options['LIMIT'] =  50;
-        $this->parameters['owner_id'] = 0; // By default there is no owner
-        $this->parameters['public'] = 1; // By defult all things are public
+        $this->parameters['ownerID'] = 0; // By default there is no owner
+        $this->parameters['public'] = 0; // By defult all things are private
         $this->strict_columns = unserialize (CONTENT_STRICT_PROPERTIES_ARRAY); // Constant cannot be an array (in PHP < 5.6) so we store it serialised and then unserialise it
     }
 
@@ -30,7 +30,9 @@ class Content {
     }
 
     function get_parameter($name) {
-        return $this->parameters[$name];
+        if (isset($this->parameters[$name])) {
+            return $this->parameters[$name];
+        }
     }
 
     function remove_parameter($name) {
@@ -221,8 +223,9 @@ class Content {
 
         // If the ID was set, see if an item with that ID exists or not
         // If it does then update that item rather than inserting a new one
-        if ($this->item_exists() !== false ) {
-            $result = $this->update($parameters); //coming soon
+        if ($this->item_exists() != false ) {
+            //var_dump($parameters);die;
+            $result = $this->update($parameters);
             return $result;
         }
 

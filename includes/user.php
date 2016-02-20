@@ -74,16 +74,19 @@ class User {
       return false;
     }
 
-    $sql = 'SELECT * FROM API_USERS_TABLE WHERE user_id=\'' . db_escape_string($this->user_id) . '\'';
+    $sql = sprintf("SELECT * FROM " .API_USERS_TABLE. " WHERE id = '%s'",
+        db_escape_string($this->user_id)
+    );
 
     $result = database_query($sql);
+
     $row = db_fetch_assoc($result);
 
-    return $this->populate_user_object($row);;
+    return $this->populate_user_object($row);
   }
 
   function populate_user_object($user_details) {
-    if(isset($user_details["user_id"])) $this->set_user_id($user_details['user_id']);
+    if(isset($user_details["id"])) $this->set_user_id($user_details['id']);
     if(isset($user_details["username"])) $this->set_username($user_details['username']);
     if(isset($user_details["first_name"])) $this->set_first_name($user_details['first_name']);
     if(isset($user_details["last_name"])) $this->set_last_name($user_details['last_name']);
