@@ -39,8 +39,7 @@ function get_request_type() {
 function get_request_user() {
     $userID = checkToken();
     if ($userID != false) {
-        $user = new User();
-        $user->user_id = $userID;
+        $user = new User($userID);
         $user->get_user();
         return $user;
     }
@@ -125,4 +124,5 @@ function return_error_response() {
 function unauthorised() {
     header('HTTP/1.0 401 Unauthorized');
     exit();
+    die;
 }

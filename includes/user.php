@@ -16,9 +16,13 @@ class User {
   var $password_hash;
   var $permission_level = 0; // coming soon
 
-  function __construct() {
-    // coming soon
-    $this->user_id = 0;
+  function __construct($userID = false) {
+    if ($userID) {
+      $this->user_id = $userID;
+      $this->get_user();
+      return $this;
+    }
+    $this->register();
   }
 
   function set_user_id($new_user_id) {
@@ -58,7 +62,7 @@ class User {
   }
 
   function get_password_hash() {
-    return $this->first_name;   
+    return $this->password_hash;
   }
 
   function get_request_username() {
@@ -83,6 +87,24 @@ class User {
     $row = db_fetch_assoc($result);
 
     return $this->populate_user_object($row);
+  }
+
+  function register() {
+    $username = $this->get_request_username();
+    $password = $this->get_request_password();
+    $password = generateHashedPassword($username, $password);
+
+    $sql = sprintf("INSERT INTO " .API_USERS_TABLE. " (username, password) VALUES ('%s', '%s')",
+        db_escape_string($username),
+        db_escape_string($password)
+    );
+
+    database_query($sql);
+    if (db_affected_rows() == 1) {
+      $this->set_user_id(db_last_ai_id());
+      $this->get_user();
+      return $this;
+    }
   }
 
   function populate_user_object($user_details) {

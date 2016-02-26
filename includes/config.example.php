@@ -28,6 +28,9 @@ define('FRONTEND_DOMAIN', '*');
 define('DB_API_USER_TABLE', ' ');
 define('DB_API_TOKEN_TABLE', ' ');
 define('PASSWORD_EXTRA_SALT', ' ');
+
+define('ALLOW_REGISTRATION', 'on'); // on | off
+
 /*---------------------------
 / Content Settings
 /---------------------------*/

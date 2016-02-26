@@ -59,6 +59,7 @@ switch ($request_type) {
     case 'POST':
         if ($user == false) {
             unauthorised();
+            break;
         }
         $owner_id = ($user ? $user->user_id : 0);
 
@@ -80,6 +81,18 @@ switch ($request_type) {
             // Return 401 error
             unauthorised();
         }
+        break;
+
+    case 'REGISTER':
+        if (ALLOW_REGISTRATION  != 'on') {
+            http_response_code(403);
+            header("Access-Control-Allow-Methods: GET, POST");
+            $GLOBALS['error'] = "Unauthorised access";
+            $GLOBALS['error_message'] = "Registration is not allowed";
+            return_error_response();
+            break;
+        }
+        $user = new User();
         break;
 
     case 'AUTHENTICATE':
