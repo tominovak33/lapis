@@ -47,7 +47,9 @@ function insertToken($username, $token) {
 }
 
 function checkLoginDetails ($username, $password) {
-    $password = generateHashedPassword($username, $password);
+    $salt = generateUserSalt(User::getUserSalt($username), PASSWORD_EXTRA_SALT);
+
+    $password = generateHashedPassword($password, $salt);
 
     $sql = sprintf("SELECT * FROM " .DB_API_USER_TABLE. " WHERE username = '%s' AND password = '%s'",
         db_escape_string($username),
@@ -62,7 +64,6 @@ function checkLoginDetails ($username, $password) {
     }
     return false;
 }
-
 
 function generateAccessToken() {
     // https://github.com/bshaffer/oauth2-server-php/blob/master/src/OAuth2/ResponseType/AccessToken.php
@@ -127,9 +128,42 @@ function getRequestUserID () {
     return false;
 }
 
-function generateHashedPassword ($username, $password) {
-    $pwdToHash = hash('md5', $username) . $password. PASSWORD_EXTRA_SALT;
-    $hashedPassword = hash('sha256', $pwdToHash);
+function randomString($length) {
+    /* most basic usage */
+    $length = ($length > 200 ? 200 : $length); // If the length is more than 200, set it back to 200 as we can only return that much
 
-    return $hashedPassword;
+    // https://github.com/bshaffer/oauth2-server-php/blob/master/src/OAuth2/ResponseType/AccessToken.php
+    if (function_exists('mcrypt_create_iv')) {
+        $randomData = mcrypt_create_iv(100, MCRYPT_DEV_URANDOM);
+        if ($randomData !== false && strlen($randomData) === 100) {
+            return bin2hex($randomData);
+        }
+    }
+    if (function_exists('openssl_random_pseudo_bytes')) {
+        $randomData = openssl_random_pseudo_bytes(100);
+        if ($randomData !== false && strlen($randomData) === 100) {
+            return bin2hex($randomData);
+        }
+    }
+    if (@file_exists('/dev/urandom')) { // Get 100 bytes of random data
+        $randomData = file_get_contents('/dev/urandom', false, null, 0, 100);
+        if ($randomData !== false && strlen($randomData) === 100) {
+            return bin2hex($randomData);
+        }
+    }
+    // Last resort which is not very secure
+    $randomData = mt_rand() . mt_rand() . mt_rand() . mt_rand() . microtime(true) . uniqid(mt_rand(), true);
+    return substr(hash('sha512', $randomData), 0, $length);
+}
+
+function generateExtraSalt() {
+    return randomString(128);
+}
+
+function generateUserSalt($randomSalt, $pepper) {
+    return hash('sha256', $randomSalt.$pepper);
+}
+
+function generateHashedPassword ($password, $salt) {
+    return hash('sha256', $password.$salt);
 }
