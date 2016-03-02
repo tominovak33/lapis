@@ -15,6 +15,7 @@ class User {
     var $email;
     var $password_hash;
     var $permission_level = 0; // coming soon
+    var $token;
 
     function __construct($userID = false) {
         if ($userID) {
@@ -22,7 +23,12 @@ class User {
             $this->get_user();
             return $this;
         }
-        $this->register();
+        $auth = $this->register();
+        if ($auth) {
+            $this->set_access_token($auth['token']);
+        } else {
+            return false;
+        }
     }
 
     function set_user_id($new_user_id) {
@@ -59,6 +65,14 @@ class User {
 
     function set_password_hash($new_password_hash) {
         $this->password_hash = $new_password_hash;
+    }
+
+    function set_access_token($token) {
+        $this->token = $token;
+    }
+
+    function get_access_token() {
+        return $this->token;
     }
 
     function get_password_hash() {
@@ -124,8 +138,10 @@ class User {
         if (db_affected_rows() == 1) {
             $this->set_user_id(db_last_ai_id());
             $this->get_user();
-            return $this;
+            $token = insertToken($this->get_user_id(), generateAccessToken());
+            return array('token' => $token, 'userID' => $this->get_user_id());
         }
+        return false;
     }
 
     function populate_user_object($user_details) {

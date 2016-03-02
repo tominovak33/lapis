@@ -93,6 +93,15 @@ switch ($request_type) {
             break;
         }
         $user = new User();
+        if ($user->get_user_id()) {
+            $response = array('token'=> $user->get_access_token(), 'userID'=>$user->get_user_id());
+            break;
+        }
+        http_response_code(403);
+        header("Access-Control-Allow-Methods: GET, POST");
+        $GLOBALS['error'] = "Registration Failed";
+        $GLOBALS['error_message'] = "This username is not valid or already taken";
+        return_error_response();
         break;
 
     case 'AUTHENTICATE':
