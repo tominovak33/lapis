@@ -64,7 +64,7 @@ function response_header_setup($startTime) {
  */
 function response_stats_headers($startTime) {
     $time = microtime(true);
-    header("lapis-finish-time: " . time());
+    header("lapis-finish-time: " . $time);
     header("lapis-process-time: " . ($time - $startTime));
     header("lapis-database-queries: " . $GLOBALS['db_query_count']);
 }

@@ -119,7 +119,7 @@ switch ($request_type) {
 
     // Allow frontend to quickly check the connection to the API. Sends back request analytics
     case 'PING':
-        header("Cache-Control: no-cache, no-store, must-revalidate"); // HTTP 1.1.
+        header("Cache-Control: no-cache, no-store, must-revalidate");
         $response['connected'] = true;
         break;
 
