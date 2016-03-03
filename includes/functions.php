@@ -50,8 +50,9 @@ function get_request_user() {
 /*
  * Sets up the response array with standard things such as the timestamp, url etc
  */
-function response_header_setup() {
-    header("lapis-request-time: " .$_SERVER['REQUEST_TIME']);
+function response_header_setup($startTime) {
+    header("lapis-request-start-time: " .$_SERVER['REQUEST_TIME']);
+    header("lapis-process-start-time: " .$startTime);
     header("lapis-request-address: " . $_SERVER['SERVER_ADDR']);
 
     header("lapis-software: " . $_SERVER['SERVER_SOFTWARE']);
@@ -61,10 +62,10 @@ function response_header_setup() {
 /*
  * Adds the time when server was finished processing the request and the time taken to deal with the response
  */
-function response_stats_headers() {
-    $time = time();
-    header("lapis-finish-time: " . $time);
-    header("lapis-process-time: " . ($time - $_SERVER['REQUEST_TIME']));
+function response_stats_headers($startTime) {
+    $time = microtime(true);
+    header("lapis-finish-time: " . time());
+    header("lapis-process-time: " . ($time - $startTime));
     header("lapis-database-queries: " . $GLOBALS['db_query_count']);
 }
 

@@ -5,6 +5,7 @@
  * Date: 07/07/15
  * Time: 20:10
  */
+$startTime = microtime(true);
 
 header("Content-Type: application/json");
 
@@ -15,7 +16,7 @@ require 'includes/user.php';
 require 'includes/authentication.php';
 require 'includes/content/content.php';
 
-response_header_setup(); // Set the initial headers for the response
+response_header_setup($startTime); // Set the initial headers for the response
 $response = []; // Set up the response array which will be converted to json at the end of the request
 
 $user = get_request_user();
@@ -116,6 +117,12 @@ switch ($request_type) {
         $response['data'] = $content->options(); // List the column names of the current content objects database table
         break;
 
+    // Allow frontend to quickly check the connection to the API. Sends back request analytics
+    case 'PING':
+        header("Cache-Control: no-cache, no-store, must-revalidate"); // HTTP 1.1.
+        $response['connected'] = true;
+        break;
+
     default:
         http_response_code(405);
         header("Access-Control-Allow-Methods: GET, POST");
@@ -128,6 +135,6 @@ if (isset($GLOBALS["error"])){
     $response['error'] = $GLOBALS["error"];
     $response['error_message'] = $GLOBALS["error_message"];
 }
-response_stats_headers(); // Create the headers that refer to statistics of the request
+response_stats_headers($startTime); // Create the headers that refer to statistics of the request
 
 echo json_encode($response, JSON_PRETTY_PRINT); //Add JSON_PRETTY_PRINT as second param if needed to make the output more readable
